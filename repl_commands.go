@@ -5,6 +5,12 @@ import (
 	"os"
 )
 
+type cliCommand struct {
+	name 			string
+	description 	string
+	callback func() error
+}
+
 func getCommands() map[string]cliCommand {
 	return map[string]cliCommand{
 		"exit": {
