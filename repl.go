@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
-	"strings"
 	"bufio"
+	"fmt"
 	"os"
+	"strings"
 )
 
 func cleanInput(text string) []string {
@@ -18,7 +18,7 @@ func startRepl() {
 	for {
 		fmt.Print("Pokedex > ")
 		reader.Scan()
-		words := cleanInput(reader.Text())		
+		words := cleanInput(reader.Text())
 		if len(words) == 0 {
 			continue
 		}
@@ -26,4 +26,3 @@ func startRepl() {
 		fmt.Printf("Your command was: %v\n", commandName)
 	}
 }
-
