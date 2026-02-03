@@ -21,8 +21,8 @@ func (l LocationAreaListResponse) PrintNames() {
 	}
 }
 
-func GetLocationAreaData(url string) (LocationAreaListResponse, error) {
-	body, err := getResponse(url)
+func (c *Client) GetLocationAreaData(url string) (LocationAreaListResponse, error) {
+	body, err := c.getResponse(url)
 	if err != nil {
 		return LocationAreaListResponse{}, fmt.Errorf("getResponse(%v) failed: %w", url, err)
 	}

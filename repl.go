@@ -8,20 +8,14 @@ import (
 	"strings"
 )
 
-type ReplConfig struct {
-	Next *string
-	Prev *string
-}
-
-func startRepl() {
-	cfg := &ReplConfig{
-		Next: nil,
-		Prev: nil,
-	}
+func startRepl(cfg *replConfig) {
 	reader := bufio.NewScanner(os.Stdin)
 	commands := getCommands()
 
+	//NOTE: print startup text
 	commands["help"].callback(cfg)
+
+	//NOTE: Read-Evaluate-Print Loop (REPL)
 	for {
 		fmt.Printf("%v---Pokedex >%v ", colorYellow, colorReset)
 		reader.Scan()
@@ -44,6 +38,7 @@ func startRepl() {
 	}
 }
 
+//NOTE: Helper functions
 func cleanInput(text string) []string {
 	output := strings.ToLower(text)
 	words := strings.Fields(output)

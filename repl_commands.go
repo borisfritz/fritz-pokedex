@@ -3,13 +3,15 @@ package main
 import (
 	"fmt"
 	"os"
-	"github.com/borisfritz/fritz-pokedex/internal/pokeapi"
 )
+
+//HACK: Constant Variable for BaseURL in case it changes (example v3)
+const BaseURL = "https://pokeapi.co/api/v2"
 
 type cliCommand struct {
 	name 			string
 	description 	string
-	callback func(*ReplConfig) error
+	callback func(*replConfig) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -37,13 +39,13 @@ func getCommands() map[string]cliCommand {
 	}
 }
 
-func commandExit(cfg *ReplConfig) error {
+func commandExit(cfg *replConfig) error {
 	fmt.Printf("%vClosing the Pokedex... Goodbye!%v", colorGreen, colorReset)
 	os.Exit(0)
 	return nil
 }
 
-func commandHelp(cfg *ReplConfig) error {
+func commandHelp(cfg *replConfig) error {
 	fmt.Printf("%vWelcome to the Pokedex!\n%v---Usage---\n", colorYellow, colorReset)
 	commands := getCommands()
 	if len(commands) == 0 {
@@ -55,14 +57,14 @@ func commandHelp(cfg *ReplConfig) error {
 	return nil
 }
 
-func commandMap(cfg *ReplConfig) error {
+func commandMap(cfg *replConfig) error {
 	var url string
 	if cfg.Next == nil {
-		url = "https://pokeapi.co/api/v2/location-area"
+		url = BaseURL + "/location-area"
 	} else {
 		url = *cfg.Next
 	}
-	locationData, err := pokeapi.GetLocationAreaData(url)
+	locationData, err := cfg.Client.GetLocationAreaData(url)
 	if err != nil {
 		return fmt.Errorf("GetLocationAreaData(%v) failed: %w", url, err)
 	}
@@ -72,12 +74,12 @@ func commandMap(cfg *ReplConfig) error {
 	return nil
 }
 
-func commandMapb(cfg *ReplConfig) error {
+func commandMapb(cfg *replConfig) error {
 	if cfg.Prev == nil {
 		fmt.Printf("%vYou are already on the first page.%v\n", colorRed, colorReset)
 		return nil
 	}
-	locationData, err := pokeapi.GetLocationAreaData(*cfg.Prev)
+	locationData, err := cfg.Client.GetLocationAreaData(*cfg.Prev)
 	if err != nil {
 		return fmt.Errorf("GetLocationAreaData(%v) failed: %w", *cfg.Prev, err)
 	}
