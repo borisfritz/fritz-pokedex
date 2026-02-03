@@ -3,13 +3,24 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"os"
 	"strings"
 )
 
+type ReplConfig struct {
+	Next *string
+	Prev *string
+}
+
 func startRepl() {
+	cfg := &ReplConfig{
+		Next: nil,
+		Prev: nil,
+	}
 	reader := bufio.NewScanner(os.Stdin)
 	commands := getCommands()
+	
 	for {
 		fmt.Print("Pokedex > ")
 		reader.Scan()
@@ -20,9 +31,9 @@ func startRepl() {
 		commandName := words[0]
 		command, ok := commands[commandName]
 		if ok {
-			err := command.callback()
+			err := command.callback(cfg)
 			if err != nil {
-				fmt.Println(err)
+				log.Println(err)
 			}
 			continue
 		} else {
