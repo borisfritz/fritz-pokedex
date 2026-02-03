@@ -11,14 +11,14 @@ type LocationAreaListResponse struct {
 	Previous *string
 	Results  []LocationAreaItem
 }
-
 type LocationAreaItem struct {
 	Name string
 	URL  string
 }
-
-func PrintLocationAreaData(url string) error {
-	return nil
+func (l LocationAreaListResponse) PrintNames() {
+	for _, location := range l.Results {
+		fmt.Println(location.Name)
+	}
 }
 
 func GetLocationAreaData(url string) (LocationAreaListResponse, error) {

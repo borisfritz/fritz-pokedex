@@ -20,9 +20,10 @@ func startRepl() {
 	}
 	reader := bufio.NewScanner(os.Stdin)
 	commands := getCommands()
-	
+
+	commands["help"].callback(cfg)
 	for {
-		fmt.Print("Pokedex > ")
+		fmt.Printf("%v---Pokedex >%v ", colorYellow, colorReset)
 		reader.Scan()
 		words := cleanInput(reader.Text())
 		if len(words) == 0 {
@@ -33,11 +34,11 @@ func startRepl() {
 		if ok {
 			err := command.callback(cfg)
 			if err != nil {
-				log.Println(err)
+				log.Println(colorRed, err, colorReset)
 			}
 			continue
 		} else {
-			fmt.Println("Unknown Command.  For commands, use command 'help'.")
+			fmt.Printf("%vUnknown Command.  For commands, use command 'help'.%v\n", colorRed, colorReset)
 			continue
 		}
 	}
