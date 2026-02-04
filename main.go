@@ -13,7 +13,7 @@ type replConfig struct {
 
 func main() {
 	cfg := &replConfig{
-		Client: pokeapi.NewClient(5 * time.Second),
+		Client: pokeapi.NewClient(5 * time.Second, time.Minute * 5),
 	}
 	startRepl(cfg)
 }

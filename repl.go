@@ -24,9 +24,10 @@ func startRepl(cfg *replConfig) {
 			continue
 		}
 		commandName := words[0]
+		arguments := words[1:]
 		command, ok := commands[commandName]
 		if ok {
-			err := command.callback(cfg)
+			err := command.callback(cfg, arguments...)
 			if err != nil {
 				log.Println(colorRed, err, colorReset)
 			}
